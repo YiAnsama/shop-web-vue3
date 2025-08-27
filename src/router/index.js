@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import Login from '@/view/login/login.vue'
 import Layout from '@/view/layout/layout.vue'
 import SearchPage from '@/view/search/searchPage.vue'
@@ -17,7 +17,7 @@ import EditAddress from '@/view/pay/editAddress.vue'
 import AddAddress from '@/view/pay/addAddress.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     { path: '/', redirect: '/index' },
     { path: '/login', component: Login },

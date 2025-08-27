@@ -262,6 +262,8 @@ function getCart() {
       }
       totalPrice.value = getTotalPrice()
     })
+  }).catch(() => {
+    showToast('登录以查看购物车')
   })
 }
 
