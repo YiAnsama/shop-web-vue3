@@ -37,7 +37,7 @@
         <van-button v-if="!isShowEdit" class="settle-btn" round color="#dd4c32ff" @click="toPay">结算({{
           selectCount }})</van-button>
         <van-button v-if="isShowEdit" class="del-btn" round color="#e30000" @click="delCarts">删除({{ selectCount
-        }})</van-button>
+          }})</van-button>
       </div>
     </div>
   </div>
@@ -265,7 +265,9 @@ function getCart() {
   })
 }
 
-getCart()
+if (localStorage.getItem('shopping_user_info')) getCart()
+else showToast('登录以查看购物车信息')
+
 
 </script>
 
