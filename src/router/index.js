@@ -17,7 +17,7 @@ import EditAddress from '@/view/pay/editAddress.vue'
 import AddAddress from '@/view/pay/addAddress.vue'
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     { path: '/', redirect: '/index' },
     { path: '/login', component: Login },

@@ -37,7 +37,7 @@
         <van-button v-if="!isShowEdit" class="settle-btn" round color="#dd4c32ff" @click="toPay">结算({{
           selectCount }})</van-button>
         <van-button v-if="isShowEdit" class="del-btn" round color="#e30000" @click="delCarts">删除({{ selectCount
-        }})</van-button>
+          }})</van-button>
       </div>
     </div>
   </div>
@@ -102,7 +102,7 @@ function toPay() {
       goodsListStore.cartIds = cartIds
       localStorage.setItem('cartIds', JSON.stringify(cartIds))
       localStorage.setItem('goodsList', JSON.stringify(goodsListStore.goodsList))
-      router.push(`#/pay?mode=cart`)
+      router.push(`/pay?mode=cart`)
     })
   }
   else showToast('还未选择商品哦')
@@ -267,10 +267,8 @@ function getCart() {
   })
 }
 
-if (cartList.value.length !== 0) {
-  getCart()
-}
-else showToast('登录以查看购物车信息')
+getCart()
+// else showToast('登录以查看购物车信息')
 
 
 </script>

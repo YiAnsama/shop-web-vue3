@@ -64,7 +64,7 @@ const subTitle = ref('')
 const goodsList = ref([])
 
 //轮播图跳转地址
-const imgSrc = ['#/goods?id=10053', '#/goods?id=10054', '#/goods?id=10055']
+const imgSrc = ['/goods?id=10053', '/goods?id=10054', '/goods?id=10055']
 
 //请求数据,加载首页
 instance({
