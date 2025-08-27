@@ -8,7 +8,7 @@
 
 ## 启动项目
 请先在项目的根目录下打开git bash(index.html所处位置)
-
+依次输入以下命令:
 ### 安装依赖项
 ```sh
 npm install
