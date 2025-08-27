@@ -125,8 +125,9 @@ import { useUserStore } from '@/stores/user';
 import { showConfirmDialog } from 'vant';
 import { showToast } from 'vant';
 import { getInfo } from '@/utils/storage';
+import { useGoodsListStore } from '@/stores/goodsList';
 // import { toRaw } from 'vue';
-
+const goodsListStore = useGoodsListStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
@@ -164,9 +165,17 @@ const plus = () => goods_count.value += 1
 
 const goods_count_buy = ref(1)
 const minus_buy = () => {
-  if (goods_count_buy.value >= 2) goods_count.value -= 1
+  if (goods_count_buy.value >= 2) goods_count_buy.value -= 1
 }
 const plus_buy = () => goods_count_buy.value += 1
+
+//获取购物车商品总数
+instance({
+  url: '/cart/total'
+}).then(result => {
+  console.log(result.data.data.cartTotal);
+  cartTotal.value = result.data.data.cartTotal
+})
 
 function showConfirm() {
   showConfirmDialog({
@@ -220,6 +229,39 @@ function addCart() {
     showToast('加入成功');
   })
 
+}
+
+function buy() {
+  userStore.token = getInfo().token
+  const goods_id = id
+  const count = goods_count_buy.value
+  // console.log(goods_id, count);
+
+  if (!userStore.token) {
+    //用户未登录
+    showConfirm()
+    return
+  }
+  instance({
+    url: '/checkout/order',
+    // method: 'post',
+    params: {
+      mode: "buyNow",
+      delivery: "10",
+      payType: 10,
+      couponId: 0,
+      isUsePoints: 0,
+      remark: "",
+      goodsId: goods_id,
+      goodsNum: count,
+      goodsSkuId: "0"
+    }
+  }).then(result => {
+    console.log(result.data.data.order.goodsList);
+    goodsListStore.goodsList = result.data.data.order.goodsList
+    localStorage.setItem('goodsList', JSON.stringify(goodsListStore.goodsList))
+    router.push(`/pay?mode=buyNow`)
+  })
 }
 //获取商品详情
 instance({

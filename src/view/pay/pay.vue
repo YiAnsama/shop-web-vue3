@@ -1,34 +1,42 @@
 <template>
   <div>
     <van-nav-bar title="订单结算" left-text="返回" left-arrow @click-left="onClickLeft" />
-    <div class="address-bar" @click="editAddress">
+    <div class="address-bar" @click="toAddress">
       <van-icon name="logistics" />
       <div class="address-info">
         <div>
-          <span style="padding-right: 10px;">姓名</span>
-          <span>联系电话</span>
+          <span style="padding-right: 10px;">{{ address.name }}</span>
+          <span>{{ address.phone }}</span>
         </div>
-        <div><span>地址</span></div>
+        <div>
+          <span>{{ address.region.province + " " + address.region.city + " " + address.region.region + " " + address.detail }}</span>
+        </div>
       </div>
       <span style="font-size: 20px;">＞</span>
     </div>
-    <div class="cart-item" v-for="(item, index) in cartList" :key="item.id">
-      <van-icon v-if="isShowEdit" :size="19" color="red" name="delete-o" @click="delCart(item.id)" class="delBtb" />
-      <label class="checkbox-wrap"><input name="checkbox" type="checkbox" @change="isSelectAll"></label>
-      <img class="goods-img" :src="item.goods.goods_image" alt="">
-      <p class='goods-name'>{{ item.goods.goods_name }}</p>
-      <span class="goods-price">￥{{ item.goods.goods_price_min }}</span>
+    <div class="cart-item-wrap">
+      <div class="cart-item" v-for="item in goodsList" :key="item.goods_id">
+        <img class="goods-img" :src="item.goods_image" alt="">
+        <p class='goods-name'>{{ item.goods_name }}</p>
+        <span class="goods-price">￥{{ item.total_price * item.total_num }}</span>
 
-      <div class="counter">
-        <button class="counter-left"
-          @click="minus(item.goods_num, index), setCart(item.goods_id, item.goods_num)">-</button>
-        <span class="count">{{ item.goods_num }}</span>
-        <button class="counter-right"
-          @click="plus(item.goods_num, index), setCart(item.goods_id, item.goods_num)">+</button>
+        <div class="counter">
+          <span class="count"> x{{ item.total_num }}</span>
+        </div>
       </div>
+      <div class="cart-item-footer">共{{ count }}件商品 , 总价: <span class="price"> ￥{{ total }}</span></div>
     </div>
-    <van-submit-bar class="submit-bar" :price="3050" button-text="提交订单" @submit="onSubmit" />
+    <div class="fee-wrap" @click="showDiscount">优惠券:<span class='fee'>-￥0</span><i class="icon">＞</i></div>
+    <div class="fee-wrap">配送费:<span class="fee">￥0</span></div>
+    <div class="fee-wrap">支付方式:</div>
+    <div class="fee-wrap"><van-icon name="balance-o" />余额支付(可用￥{{ balance }}元)</div>
+    <van-popup closeable round v-model:show="showBottom" position="bottom" :style="{ height: '40%' }">
+      <div class="discount-item">暂无优惠券</div>
+    </van-popup>
+
+    <van-submit-bar class="submit-bar" :price="total * 100" button-text="支付订单" @submit="onSubmit" />
   </div>
+  <footer class="footer"></footer>
 </template>
 
 <script>
@@ -38,17 +46,119 @@ export default {
 </script>
 
 <script setup>
-// import { ref } from 'vue';
+import instance from '@/utils/request';
 import { showToast } from 'vant';
-// import { useRoute } from 'vue-router';
-// const route = useRoute()
-const onClickLeft = () => history.back();
-const onSubmit = () => showToast('点击按钮');
+import { computed, ref } from 'vue';
+// import { showToast } from 'vant';
+import { useRouter, useRoute } from 'vue-router';
+import { useGoodsListStore } from '@/stores/goodsList';
+import { showNotify } from 'vant';
+const goodsListStore = useGoodsListStore()
+const route = useRoute()
+const router = useRouter()
+const showBottom = ref(false)
+// const cartIds = ref()
+const goodsList = ref([])
+const address = ref()
+const balance = ref(0)
+const cartIds = ref('')
 
-function editAddress() {
+//获取用户余额
+instance({
+  url: '/user/assets'
+}).then(result => {
+  console.log(result);
+  balance.value = result.data.data.assets.balance
+})
 
+//获取订单信息,渲染到界面
+goodsListStore.cartIds = JSON.parse(localStorage.getItem('cartIds'))
+goodsListStore.goodsList = JSON.parse(localStorage.getItem('goodsList'))
+goodsList.value = goodsListStore.goodsList
+cartIds.value = goodsListStore.cartIds
+
+//获取地址信息,渲染到界面
+instance({
+  url: '/address/list'
+}).then(result => {
+  console.log(result);
+  address.value = result.data.data.list[result.data.data.list.length - 1]
+})
+
+const onClickLeft = () => router.back();
+const onSubmit = () => {
+  const mode = route.query.mode
+  console.log(mode);
+  if (mode === 'buyNow') {
+    instance({
+      url: '/checkout/submit',
+      method: 'post',
+      data: {
+        mode: 'buyNow',
+        delivery: "10",
+        payType: 10,
+        couponId: 0,
+        isUsePoints: 0,
+        remark: "",
+        goodsId: goodsList.value[0].goods_id,
+        goodsNum: goodsList.value[0].total_num,
+        goodsSkuId: goodsList.value[0].goods_sku_id
+      }
+    }).then(result => {
+      console.log(result);
+      // showToast('购买成功')
+      showNotify({ type: 'success', message: '购买成功' })
+      router.replace('/order')
+    })
+  }
+  else if (mode === 'cart') {
+    console.log(cartIds.value);
+
+    instance({
+      url: '/checkout/submit',
+      method: 'post',
+      data: {
+        mode: "cart",
+        delivery: "10",
+        payType: 10,
+        couponId: 0,
+        isUsePoints: 0,
+        remark: "",
+        cartIds: cartIds.value
+      }
+    }).then(result => {
+      console.log(result);
+      // showToast('购买成功')
+      showNotify({ type: 'success', message: '购买成功' })
+      router.replace('/order')
+    })
+  }
 }
 
+// const address = JSON.parse(localStorage.getItem('chosenAddress'))
+const count = computed(() => {
+  let total_count = 0
+  goodsList.value.forEach(ele => {
+    total_count += ele.total_num
+  })
+  return total_count
+})
+const total = computed(() => {
+  let total_price = 0
+  goodsList.value.forEach(ele => {
+    total_price += ele.total_price * ele.total_num
+  })
+  return total_price
+})
+
+function toAddress() {
+  showToast('抱歉,此功能还待完善')
+  // router.push('/address')
+}
+
+function showDiscount() {
+  showBottom.value = true
+}
 </script>
 
 <style scoped>
@@ -74,6 +184,9 @@ body {
   padding: 10px;
 }
 
+.cart-item-wrap {
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
 
 .cart-item {
   position: relative;
@@ -86,6 +199,34 @@ body {
   position: relative;
   align-items: center;
   background-color: white;
+  /* border-bottom: 1px solid rgb(228, 228, 228); */
+}
+
+.cart-item-footer {
+  padding: 10px;
+  text-align: right;
+}
+
+.price {
+  color: red;
+  font-size: 20px;
+}
+
+.fee-wrap {
+  padding: 6px;
+}
+
+.fee {
+  padding-right: 20px;
+  float: right;
+  color: red;
+  font-size: 18px;
+}
+
+.icon {
+  position: absolute;
+  right: 5px;
+  font-size: 18px;
 }
 
 .checkbox-wrap {
@@ -142,7 +283,7 @@ input[type="checkbox"]:checked {
 .goods-price {
   position: absolute;
   top: 80px;
-  left: 40vw;
+  left: 70vw;
   font-size: 20px;
   color: red;
 }
@@ -150,25 +291,18 @@ input[type="checkbox"]:checked {
 .counter {
   position: absolute;
   top: 80px;
-  left: 70vw;
+  left: 35vw;
   height: 25px;
   padding: 5px 0;
   border-radius: 3px;
-  background-color: rgb(235, 235, 235);
-}
-
-
-.counter-left,
-.counter-right {
-  width: 30px;
-  border: 0;
-  background-color: rgba(0, 0, 0, 0);
 }
 
 .count {
   display: inline-block;
   text-align: center;
   width: 25px;
+  font-size: 19px;
+  color: rgb(24, 24, 24);
 }
 
 .counter-left {
@@ -177,5 +311,16 @@ input[type="checkbox"]:checked {
 
 .counter-right {
   border-left: 1px solid rgb(208, 208, 208);
+}
+
+.footer {
+  height: 50px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.discount-item {
+  padding: 8px;
+  text-align: center;
 }
 </style>

@@ -30,7 +30,9 @@
         ￥{{ item.line_price_min }}
       </template>
     </GoodsItem>
-    <footer class="footer" style="text-align: center;">- 已经到底啦 -</footer>
+    <footer v-if="goodsList.length !== 0" class="footer" style="text-align: center;">- 已经到底啦 -</footer>
+    <van-empty v-else image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png" image-size="80"
+      description="抱歉,没有找到相关商品" />
   </div>
 </template>
 

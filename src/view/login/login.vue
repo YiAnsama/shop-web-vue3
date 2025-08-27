@@ -71,7 +71,7 @@ function getCode() {
     url: '/captcha/sendSmsCaptcha'
   }).then(result => {
     console.log(result.data);
-    showToast('短信已发送,请注意查收');
+    showToast('测试环境验证码为:246810');
   }).catch(error => console.log(error));
 }
 function login() {
@@ -93,10 +93,38 @@ function login() {
     userStore.userId = result.data.data.userId
     setInfo(userStore.token, userStore.userId)
     console.log(userStore.token, userStore.userId);
-
     showNotify({ type: 'success', message: '登陆成功' })
     const url = route.query.backUrl || '/'
-    router.replace(url)
+
+    //生成默认地址信息
+    instance({
+      url: '/address/add',
+      method: 'post',
+      data: {
+        form: {
+          name: "東雲",
+          phone: "17854123698",
+          region: [
+            {
+              value: 1925,
+              label: '广东省'
+            },
+            {
+              value: 1926,
+              label: "广州市"
+            },
+            {
+              value: 1929,
+              label: "海珠区"
+            },
+          ],
+          detail: '赤岗街道新鸿社区阅江西路222号'
+        }
+      }
+    }).then(result => {
+      console.log(result);
+      router.replace(url)
+    })
   }).catch(error => {
     console.log(error)
   }

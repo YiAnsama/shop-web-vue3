@@ -29,6 +29,12 @@ import {
   Empty,
   SubmitBar,
   AddressList,
+  AddressEdit,
+  Area,
+  Tab,
+  Tabs,
+  Sidebar,
+  SidebarItem,
 } from 'vant'
 
 const app = createApp(App)
@@ -57,6 +63,12 @@ app
   .use(Empty)
   .use(SubmitBar)
   .use(AddressList)
+  .use(AddressEdit)
+  .use(Area)
+  .use(Tab)
+  .use(Tabs)
+  .use(Sidebar)
+  .use(SidebarItem)
 app.use(pinia)
 app.use(router)
 

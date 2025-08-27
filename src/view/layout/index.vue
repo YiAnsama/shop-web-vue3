@@ -5,8 +5,8 @@
       <input class="search-input" type="search" :placeholder="placeholder" @focus="router.push('/searchPage')">
     </div>
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item v-for="value in swiperImgs" :key="value"><img class="banner" :src='value.imgUrl'
-          alt=""></van-swipe-item>
+      <van-swipe-item v-for="(value, index) in swiperImgs" :key="value" @click="toGoodsDetail(index)"><img
+          class="banner" :src='value.imgUrl' alt=""></van-swipe-item>
     </van-swipe>
     <van-notice-bar mode="closeable" color="#fff" background="#5a5a5a" class="notice-bar" left-icon="volume-o"
       :text="notice" />
@@ -50,8 +50,10 @@ import GoodsItem from '@/components/GoodsItem.vue';
 import instance from '@/utils/request';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useTagStore } from '@/stores/tag';
+const tagStore = useTagStore()
 const router = useRouter()
-
+tagStore.tag_value = 0
 //数据
 const placeholder = ref('')
 const swiperImgs = ref([])
@@ -60,6 +62,9 @@ const navImgs = ref([])
 const mainImg = ref([])
 const subTitle = ref('')
 const goodsList = ref([])
+
+//轮播图跳转地址
+const imgSrc = ['/goods?id=10053', '/goods?id=10054', '/goods?id=10055']
 
 //请求数据,加载首页
 instance({
@@ -81,6 +86,9 @@ instance({
   document.getElementById('subTitle').innerHTML = subTitle.value
 })
 
+function toGoodsDetail(index) {
+  router.push(imgSrc[index])
+}
 
 </script>
 

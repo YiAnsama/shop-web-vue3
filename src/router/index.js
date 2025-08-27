@@ -12,6 +12,9 @@ import Cart from '@/view/layout/cart.vue'
 import My from '@/view/layout/my.vue'
 import Comment from '@/view/goods/comment.vue'
 import authority from '@/utils/authority'
+import Address from '@/view/pay/address.vue'
+import EditAddress from '@/view/pay/editAddress.vue'
+import AddAddress from '@/view/pay/addAddress.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +37,9 @@ const router = createRouter({
     { path: '/pay', component: Pay },
     { path: '/order', component: Order },
     { path: '/comment', component: Comment },
+    { path: '/address', component: Address },
+    { path: '/editAddress', component: EditAddress },
+    { path: '/addAddress', component: AddAddress },
   ],
 })
 

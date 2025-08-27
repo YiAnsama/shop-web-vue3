@@ -37,7 +37,7 @@
         <van-button v-if="!isShowEdit" class="settle-btn" round color="#dd4c32ff" @click="toPay">结算({{
           selectCount }})</van-button>
         <van-button v-if="isShowEdit" class="del-btn" round color="#e30000" @click="delCarts">删除({{ selectCount
-          }})</van-button>
+        }})</van-button>
       </div>
     </div>
   </div>
@@ -54,7 +54,9 @@ import { useTagStore } from '@/stores/tag';
 import instance from '@/utils/request';
 import { showConfirmDialog, showToast } from 'vant';
 import router from '@/router';
+import { useGoodsListStore } from '@/stores/goodsList';
 
+const goodsListStore = useGoodsListStore()
 const tag = useTagStore()
 tag.tag_value = 2
 
@@ -71,7 +73,38 @@ function switchEdit() {
 }
 
 function toPay() {
-  if (selectCount.value) router.push(`/pay`)
+  if (selectCount.value) {
+    const checkedGoods = []
+    const isCheckdeList = JSON.parse(localStorage.getItem('isCheckdeList'))
+    isCheckdeList.forEach((ele, index) => {
+      if (ele) {
+        checkedGoods.push(cartList.value[index])
+      }
+    })
+    // localStorage.setItem('checkedGoods', JSON.stringify(checkedGoods))
+    //提交订单
+    const cartIds = checkedGoods.map(ele => ele.id).join(',')
+    instance({
+      url: '/checkout/order',
+      // method: 'post',
+      params: {
+        mode: "cart",
+        delivery: "10",
+        payType: 10,
+        couponId: 0,
+        isUsePoints: 0,
+        remark: "",
+        cartIds: cartIds
+      }
+    }).then(result => {
+      console.log(result.data.data.order.goodsList);
+      goodsListStore.goodsList = result.data.data.order.goodsList
+      goodsListStore.cartIds = cartIds
+      localStorage.setItem('cartIds', JSON.stringify(cartIds))
+      localStorage.setItem('goodsList', JSON.stringify(goodsListStore.goodsList))
+      router.push(`/pay?mode=cart`)
+    })
+  }
   else showToast('还未选择商品哦')
 }
 
@@ -130,25 +163,44 @@ function setCart(id, num) {
 }
 
 function delCarts() {
-  const isCheckdeList = JSON.parse(localStorage.getItem('isCheckdeList'))
-  const delList = []
-  isCheckdeList.forEach((ele, index) => {
-    if (ele) {
-      delList.push(cartList.value[index].id)
-    }
-  })
-  console.log(delList);
-  if (delList) {
-    instance({
-      url: "/cart/clear",
-      params: {
-        cartIds: delList
-      }
-    }).then(result => {
-      console.log(result);
-      getCart()
-    })
+  if (!selectCount.value) {
+    showToast('还未选中商品哦')
+    return
   }
+  showConfirmDialog({
+    title: '删除商品',
+    message:
+      '确认降选中的商品从购物车删除吗?',
+    confirmButtonText: '删除',
+    confirmButtonColor: 'red',
+    cancelButtonText: '再想想'
+  })
+    .then(() => {
+      // on confirm
+      const isCheckdeList = JSON.parse(localStorage.getItem('isCheckdeList'))
+      const delList = []
+      isCheckdeList.forEach((ele, index) => {
+        if (ele) {
+          delList.push(cartList.value[index].id)
+        }
+      })
+      console.log(delList);
+      if (delList) {
+        instance({
+          url: "/cart/clear",
+          params: {
+            cartIds: delList
+          }
+        }).then(result => {
+          console.log(result);
+          getCart()
+        })
+      }
+    })
+    .catch(() => {
+      // on cancel
+    });
+
 }
 
 function delCart(id) {
@@ -332,6 +384,7 @@ input[type="checkbox"]:checked {
   height: 110px;
   text-align: center;
   margin-bottom: 10px;
+  background-color: white;
 }
 
 .settle-line {

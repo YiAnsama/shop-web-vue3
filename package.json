@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vant/area-data": "^2.1.0",
     "axios": "^1.11.0",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
