@@ -7,25 +7,20 @@
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) .
 
 ## 启动项目
+请先在项目的根目录下打开git bash(index.html所处位置)
 
+### 安装依赖项
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
+### 启动了本地开发服务器
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+### 打包项目
 
 ```sh
 npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```
