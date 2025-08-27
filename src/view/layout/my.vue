@@ -61,7 +61,7 @@
         <div>全部订单</div>
       </div>
 
-      <div class="item" @click="router.push('/order?active=1')">
+      <div class="item" @click="router.push('#/order?active=1')">
         <van-badge :content="payment" v-if="payment != 0">
           <div><van-icon name="clock-o" size="25" /></div>
         </van-badge>
@@ -69,7 +69,7 @@
         <div>待支付</div>
 
       </div>
-      <div class="item" @click="router.push('/order?active=2')">
+      <div class="item" @click="router.push('#/order?active=2')">
         <van-badge :content="delivery" v-if="delivery != 0">
           <div><van-icon name="logistics" size="25" /></div>
         </van-badge>
@@ -77,14 +77,14 @@
         <div>待发货</div>
 
       </div>
-      <div class="item" @click="router.push('/order?active=3')">
+      <div class="item" @click="router.push('#/order?active=3')">
         <van-badge :content="received" v-if="received != 0">
           <div><van-icon name="send-gift-o" size="25" /></div>
         </van-badge>
         <div v-else><van-icon name="send-gift-o" size="25" /></div>
         <div>待收货</div>
       </div>
-      <div class="item" @click="router.push('/order?active=4')">
+      <div class="item" @click="router.push('#/order?active=4')">
         <van-badge :content="refund" v-if="refund != 0">
           <div><van-icon name="comment-o" size="25" /></div>
         </van-badge>

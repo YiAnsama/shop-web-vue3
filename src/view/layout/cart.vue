@@ -102,7 +102,7 @@ function toPay() {
       goodsListStore.cartIds = cartIds
       localStorage.setItem('cartIds', JSON.stringify(cartIds))
       localStorage.setItem('goodsList', JSON.stringify(goodsListStore.goodsList))
-      router.push(`/pay?mode=cart`)
+      router.push(`#/pay?mode=cart`)
     })
   }
   else showToast('还未选择商品哦')
@@ -267,7 +267,11 @@ function getCart() {
   })
 }
 
-getCart()
+if (cartList.value.length !== 0) {
+  getCart()
+}
+else showToast('登录以查看购物车信息')
+
 
 </script>
 

@@ -39,7 +39,7 @@ instance({
 })
 
 function toSearchList(name) {
-  router.push(`/searchList?search=${name}`)
+  router.push(`#/searchList?search=${name}`)
 }
 </script>
 

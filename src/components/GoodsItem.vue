@@ -35,7 +35,7 @@ const props = defineProps({
   primary_price: String
 })
 const id = ref(props.goods_id)
-const url = `/goods?id=${id.value}`
+const url = `#/goods?id=${id.value}`
 </script>
 
 <style>
