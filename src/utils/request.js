@@ -2,7 +2,7 @@ import axios from 'axios'
 import { showNotify, closeToast, showLoadingToast } from 'vant'
 import { getInfo } from './storage'
 const instance = axios.create({
-  baseURL: 'http://smart-shop.itheima.net/index.php?s=/api',
+  baseURL: 'https://smart-shop.itheima.net/index.php?s=/api',
   timeout: 6000,
   headers: { platform: 'H5' },
 })
