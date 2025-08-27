@@ -12,6 +12,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  //运行于github pages环境时配置,运行于本地时注释
   base: '/shoppingApp/',
   build: {
     outDir: 'docs',
