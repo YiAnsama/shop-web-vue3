@@ -1,35 +1,32 @@
 # shopApp
 
-This template should help get you started developing with Vue 3 in Vite.
+以下内容将协助你运行此使用vite搭建的vue3项目
 
-## Recommended IDE Setup
+## IDE 推荐
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) .
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
+## 启动项目
+请先在项目的根目录下打开git bash(index.html所处位置),
+依次输入以下命令:
+### 安装依赖项
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
+### 启动本地开发服务器
 ```sh
 npm run dev
 ```
+#### 在游览器中打开项目
+在浏览器中访问:
+```sh
+http://localhost:5173
+```
+端口号可能因设备而异,请查看运行npm run dev 后终端的输出
 
-### Compile and Minify for Production
+### 打包项目
 
 ```sh
 npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```

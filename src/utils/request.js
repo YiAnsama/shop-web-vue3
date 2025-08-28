@@ -2,8 +2,8 @@ import axios from 'axios'
 import { showNotify, closeToast, showLoadingToast } from 'vant'
 import { getInfo } from './storage'
 const instance = axios.create({
-  baseURL: 'http://smart-shop.itheima.net/index.php?s=/api',
-  timeout: 6000,
+  baseURL: 'https://smart-shop.itheima.net/index.php?s=/api',
+  timeout: 20000,
   headers: { platform: 'H5' },
 })
 
@@ -52,6 +52,7 @@ instance.interceptors.response.use(
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     showNotify({ type: 'danger', message: error.message })
+    closeToast(1)
     return Promise.reject(error)
   },
 )

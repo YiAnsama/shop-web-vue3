@@ -154,7 +154,7 @@ const cartTotal = ref(0)
 const showCart = () => isShowCart.value = true
 const showBuy = () => isShowBuy.value = true
 const onClickLeft = () => history.back()
-const toCommentPage = () => router.push(`/comment?id=${id}`)
+const toCommentPage = () => router.push(`#/comment?id=${id}`)
 
 //计数器
 const goods_count = ref(1)
@@ -260,7 +260,7 @@ function buy() {
     console.log(result.data.data.order.goodsList);
     goodsListStore.goodsList = result.data.data.order.goodsList
     localStorage.setItem('goodsList', JSON.stringify(goodsListStore.goodsList))
-    router.push(`/pay?mode=buyNow`)
+    router.push(`#/pay?mode=buyNow`)
   })
 }
 //获取商品详情
