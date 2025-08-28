@@ -267,7 +267,9 @@ function getCart() {
   })
 }
 
-getCart()
+if (localStorage.getItem('shopping_user_info')) getCart()
+else showToast('登录以查看购物车信息')
+
 
 </script>
 
