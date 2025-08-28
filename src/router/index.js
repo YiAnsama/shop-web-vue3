@@ -1,19 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/view/login/login.vue'
 import Layout from '@/view/layout/layout.vue'
-import SearchPage from '@/view/search/searchPage.vue'
-import SearchList from '@/view/search/searchList.vue'
-import Goods from '@/view/goods/goods.vue'
-import Pay from '@/view/pay/pay.vue'
-import Order from '@/view/order/order.vue'
 import Index from '@/view/layout/index.vue'
 import Category from '@/view/layout/category.vue'
 import Cart from '@/view/layout/cart.vue'
 import My from '@/view/layout/my.vue'
-import Comment from '@/view/goods/comment.vue'
-import authority from '@/utils/authority'
-import Address from '@/view/pay/address.vue'
-import EditAddress from '@/view/pay/editAddress.vue'
+
+//组件异步加载
+const Login = () => import('@/view/login/login.vue')
+const SearchPage = () => import('@/view/search/searchPage.vue')
+const SearchList = () => import('@/view/search/searchList.vue')
+const Goods = () => import('@/view/goods/goods.vue')
+const Pay = () => import('@/view/pay/pay.vue')
+const Order = () => import('@/view/order/order.vue')
+const Comment = () => import('@/view/goods/comment.vue')
+const authority = () => import('@/utils/authority')
+const Address = () => import('@/view/pay/address.vue')
+const EditAddress = () => import('@/view/pay/editAddress.vue')
 import AddAddress from '@/view/pay/addAddress.vue'
 
 const router = createRouter({
