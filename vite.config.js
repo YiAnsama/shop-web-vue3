@@ -13,8 +13,8 @@ export default defineConfig({
     },
   },
   //运行于github pages环境时配置,运行于本地时注释
-  base: '/shoppingApp/',
-  build: {
-    outDir: 'docs',
-  },
+  // base: '/shoppingApp/',
+  // build: {
+  //   outDir: 'docs',
+  // },
 })
