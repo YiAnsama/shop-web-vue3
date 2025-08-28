@@ -18,6 +18,11 @@ npm install
 ```sh
 npm run dev
 ```
+#### 在游览器中打开项目
+```sh
+在浏览器中访问http://localhost:5173
+```
+端口号可能因设备而异,请查看运行npm run dev 后终端的输出
 
 ### 打包项目
 
