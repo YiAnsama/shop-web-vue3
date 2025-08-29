@@ -36,19 +36,19 @@
     <footer class="footer" style="text-align: center;">- 已经到底啦 -</footer>
     <footer class="foot_nav">
       <div class="nav">
-        <a href="/">
+        <router-link to="/">
           <van-icon size="7vw" name="home-o" /><br>
           首页
-        </a>
+        </router-link>
       </div>
       <div class="nav">
-        <a href="/cart">
+        <router-link to="/cart">
           <van-badge v-if="cartTotal > 0" :content="cartTotal">
             <van-icon size="7vw" name="cart-o" /><br>
           </van-badge>
           <van-icon v-else size="7vw" name="cart-o" /><br>
           购物车
-        </a>
+        </router-link>
       </div>
       <van-button @click="showCart" class="vant_btn" round color="linear-gradient(to right, #ffb326, #ffa700)">
         加入购物车
@@ -154,7 +154,7 @@ const cartTotal = ref(0)
 const showCart = () => isShowCart.value = true
 const showBuy = () => isShowBuy.value = true
 const onClickLeft = () => history.back()
-const toCommentPage = () => router.push(`#/comment?id=${id}`)
+const toCommentPage = () => router.push(`/comment?id=${id}`)
 
 //计数器
 const goods_count = ref(1)
@@ -260,7 +260,7 @@ function buy() {
     console.log(result.data.data.order.goodsList);
     goodsListStore.goodsList = result.data.data.order.goodsList
     localStorage.setItem('goodsList', JSON.stringify(goodsListStore.goodsList))
-    router.push(`#/pay?mode=buyNow`)
+    router.push(`/pay?mode=buyNow`)
   })
 }
 //获取商品详情

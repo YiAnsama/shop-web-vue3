@@ -11,13 +11,13 @@
     <van-notice-bar mode="closeable" color="#fff" background="#5a5a5a" class="notice-bar" left-icon="volume-o"
       :text="notice" />
     <div class="nav-grid">
-      <a href="/" class="nav-item" v-for="image in navImgs" :key="image"><img :src="image.imgUrl" alt=""
+      <router-link href="/" class="nav-item" v-for="image in navImgs" :key="image"><img :src="image.imgUrl" alt=""
           style="width: 50px;">
         <p>{{ image.text }}</p>
-      </a>
+      </router-link>
     </div>
     <div class="main">
-      <a href="/index"><img class="" :src="mainImg" alt="" style="width: 100%;"></a>
+      <router-link href="/index"><img class="" :src="mainImg" alt="" style="width: 100%;"></router-link>
       <div id="subTitle"></div>
       <GoodsItem :goods_id="item.goods_id" v-for="item in goodsList" :key="item.goods_id" :imgUrl="item.goods_image"
         :primary_price="item.line_price_min">

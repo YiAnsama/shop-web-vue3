@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import "./styles/common.css"
 
 //全局注册vant组件,导入样式
 import 'vant/lib/index.css'

@@ -1,18 +1,16 @@
 <template>
-  <div class="goods-item">
-    <a :href="url">
-      <img class="goods-img" :src="imgUrl" alt="">
-      <p class="gooods-desc">
-        <slot name="goods_name">三星手机 SAMSUNG Galaxy S23 8GB + 256GB</slot>
-      </p>
-      <p class="goods-sale">已售<slot name="goods_sales">1022</slot>件</p>
-      <span class="price">
-        <slot name="goods_price">￥5699</slot>
-      </span>
-      <span class="primary-price" v-if="primary_price != '0.00'">
-        <slot name="line_price">￥6699.00</slot>
-      </span>
-    </a>
+  <div class="goods-item" @click="router.push(url)">
+    <img class="goods-img" :src="imgUrl" alt="">
+    <p class="gooods-desc">
+      <slot name="goods_name">三星手机 SAMSUNG Galaxy S23 8GB + 256GB</slot>
+    </p>
+    <p class="goods-sale">已售<slot name="goods_sales">1022</slot>件</p>
+    <span class="price">
+      <slot name="goods_price">￥5699</slot>
+    </span>
+    <span class="primary-price" v-if="primary_price != '0.00'">
+      <slot name="line_price">￥6699.00</slot>
+    </span>
   </div>
 </template>
 
@@ -27,6 +25,7 @@ export default {
 </script>
 
 <script setup>
+import router from '@/router';
 import { ref } from 'vue';
 import { defineProps } from 'vue';
 const props = defineProps({
