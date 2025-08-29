@@ -34,5 +34,5 @@ npm run build
 ### 项目在线网址
 
 ```sh
-
+https://shop-web-vue3.netlify.app/index
 ```
